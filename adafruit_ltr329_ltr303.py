@@ -2,10 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 """
-`adafruit_ltr329`
+`adafruit_ltr329_ltr303`
 ================================================================================
 
-Python driver for LTR-329 light sensor
+Python driver for LTR-329 and LTR-303 ight sensor
 
 
 * Author(s): ladyada
@@ -34,10 +34,11 @@ from adafruit_register.i2c_bit import RWBit
 from adafruit_register.i2c_bits import RWBits
 
 __version__ = "0.0.0+auto.0"
-__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_LTR329.git"
+__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_LTR329_LTR303.git"
 
 _LTR329_I2CADDR_DEFAULT: int = const(0x29)  # Default I2C address
 
+# These registers on both LTR-329 and LTR-303
 _LTR329_REG_ALS_CONTR = const(0x80)
 _LTR329_REG_ALS_MEASRATE = const(0x85)
 _LTR329_REG_PARTID = const(0x86)
@@ -45,6 +46,11 @@ _LTR329_REG_MANUID = const(0x87)
 _LTR329_REG_CHANNEL1 = const(0x88)
 _LTR329_REG_CHANNEL0 = const(0x8A)
 _LTR329_REG_STATUS = const(0x8C)
+# These registers on LTR-303 only!
+_LTR303_REG_INTERRUPT = const(0x8F)
+_LTR303_REG_THRESHHIGH_LSB = const(0x97)
+_LTR303_REG_THRESHLOW_LSB = const(0x99)
+_LTR303_REG_INTPERSIST = const(0x9E)
 
 # valid ALS gains
 _als_gains = (1, 2, 4, 8, None, None, 48, 96)
@@ -162,3 +168,40 @@ class LTR329:
        ir = temp & 0xFFFF
        vis_ir = temp >> 16
        return (vis_ir - ir)
+
+
+class LTR303(LTR329):
+    """Base river for the LTR-303 light sensor, basically an LTR-329 with INT out
+    :param ~busio.I2C i2c_bus: The I2C bus the sensor is connected to.
+    :param address: The I2C device address. Defaults to :const:`0x29`
+    """
+    _enable_int = RWBit(_LTR303_REG_INTERRUPT, 1)
+    _int_polarity = RWBit(_LTR303_REG_INTERRUPT, 2)
+
+    @property
+    def enable_int(self):
+        return self._enable_int
+
+    @enable_int.setter
+    def enable_int(self, enable):
+        # we must be in non-active mode to change this register!
+        curr_mode = self.active_mode
+        self.active_mode = False
+        # now change the bit...
+        self._enable_int = enable
+        # and reset the mode
+        self.active_mode = curr_mode
+
+    @property
+    def int_polarity(self):
+        return self._int_polarity
+
+    @int_polarity.setter
+    def int_polarity(self, pol):
+        # we must be in non-active mode to change this register!
+        curr_mode = self.active_mode
+        self.active_mode = False
+        # now change the bit...
+        self._int_polarity = pol
+        # and reset the mode
+        self.active_mode = curr_mode
