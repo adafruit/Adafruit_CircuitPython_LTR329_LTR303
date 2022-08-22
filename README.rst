@@ -21,7 +21,7 @@ Introduction
     :target: https://github.com/psf/black
     :alt: Code Style: Black
 
-Python driver for LTR-329 light sensor
+Python & CircuitPython driver for LTR-329 or LTR-303 light sensors
 
 
 Dependencies
