@@ -4,12 +4,12 @@
 
 import time
 import board
-import adafruit_ltr329
+from adafruit_ltr329_ltr303 import LTR329
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
 
 time.sleep(0.1) # sensor takes 100ms to 'boot' on power up
-ltr329 = adafruit_ltr329.LTR329(i2c)
+ltr329 = LTR329(i2c)
 
 while True:
     print("Visible + IR:", ltr329.visible_plus_ir_light)
