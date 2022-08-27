@@ -177,7 +177,26 @@ class LTR303(LTR329):
     """
     _enable_int = RWBit(_LTR303_REG_INTERRUPT, 1)
     _int_polarity = RWBit(_LTR303_REG_INTERRUPT, 2)
+    # The high and low int thresholds
+    threshold_high = UnaryStruct(_LTR303_REG_THRESHHIGH_LSB, "<H")
+    threshold_low = UnaryStruct(_LTR303_REG_THRESHLOW_LSB, "<H")
+    
+    _int_persistance = RWBits(4, _LTR303_REG_INTPERSIST, 0)
 
+    @property
+    def int_persistance(self):
+        return self._int_persistance + 1
+
+    @int_persistance.setter
+    def int_persistance(self, counts):
+        # how long the data needs to be high/low to generate an interrupt
+        # Setting of 1 means 'every measurement', 2 means "two in a row", etc
+        # up to 16
+        if not 1 <= counts <= 16:
+            raise ValueError("Persistance counts must be 1-16")
+        self._int_persistance = counts - 1
+
+    
     @property
     def enable_int(self):
         return self._enable_int
