@@ -141,7 +141,7 @@ class LTR329:
         self._measurement_rate = _measurement_rates.index(rate)
 
     def throw_out_reading(self):
-        self._light_data
+        _ = self._light_data
 
     @property
     def light_channels(self):
@@ -153,14 +153,14 @@ class LTR329:
     @property
     def visible_plus_ir_light(self):
         if self.als_data_invalid:
-            self._light_data  # read data to clear it out
+            _ = self._light_data  # read data to clear it out
             raise ValueError("Data invalid / over-run!")
         return self._light_data >> 16
 
     @property
     def ir_light(self):
         if self.als_data_invalid:
-            self._light_data  # read data to clear it out
+            _ = self._light_data  # read data to clear it out
             raise ValueError("Data invalid / over-run!")
         return self._light_data & 0xFFFF
 
