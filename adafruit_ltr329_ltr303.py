@@ -61,9 +61,10 @@ _measurement_rates = (50, 100, 200, 500, 1000, 2000, 2000, 2000)
 
 
 class LTR329:
-    """Base river for the LTR-329 light sensor.
+    """Base driver for the LTR-329 light sensor.
+
     :param ~busio.I2C i2c_bus: The I2C bus the sensor is connected to.
-    :param address: The I2C device address. Defaults to :const:`0x29`
+    :param int address: The I2C device address. Defaults to :const:`0x29`
     """
 
     part_id = ROUnaryStruct(_LTR329_REG_PARTID, "<B")
@@ -141,10 +142,12 @@ class LTR329:
         self._measurement_rate = _measurement_rates.index(rate)
 
     def throw_out_reading(self):
+        """Throw out a reading (typically done to clear it out)"""
         _ = self._light_data
 
     @property
     def light_channels(self):
+        """A data pair of both visible+IR light, and the IR-only light"""
         temp = self._light_data
         if self.als_data_invalid:
             raise ValueError("Data invalid / over-run!")
@@ -152,6 +155,7 @@ class LTR329:
 
     @property
     def visible_plus_ir_light(self):
+        """The visible + IR light data"""
         if self.als_data_invalid:
             _ = self._light_data  # read data to clear it out
             raise ValueError("Data invalid / over-run!")
@@ -159,6 +163,7 @@ class LTR329:
 
     @property
     def ir_light(self):
+        """The IR light data"""
         if self.als_data_invalid:
             _ = self._light_data  # read data to clear it out
             raise ValueError("Data invalid / over-run!")
@@ -166,18 +171,20 @@ class LTR329:
 
     @property
     def visible_light(self):
+        """The visible light data"""
         temp = self._light_data
         if self.als_data_invalid:
             raise ValueError("Data invalid / over-run!")
         infra = temp & 0xFFFF
-        vis_ir = temp >> 16
-        return vis_ir - infra
+        vis_infra = temp >> 16
+        return vis_infra - infra
 
 
 class LTR303(LTR329):
-    """Base river for the LTR-303 light sensor, basically an LTR-329 with INT out
+    """Base driver for the LTR-303 light sensor, basically an LTR-329 with INT out
+
     :param ~busio.I2C i2c_bus: The I2C bus the sensor is connected to.
-    :param address: The I2C device address. Defaults to :const:`0x29`
+    :param int address: The I2C device address. Defaults to :const:`0x29`
     """
 
     _enable_int = RWBit(_LTR303_REG_INTERRUPT, 1)
@@ -190,19 +197,21 @@ class LTR303(LTR329):
 
     @property
     def int_persistance(self):
+        """How long the data needs to be high/low to generate an interrupt.
+        Setting of 1 means 'every measurement', 2 means "two in a row", etc
+        up to 16
+        """
         return self._int_persistance + 1
 
     @int_persistance.setter
     def int_persistance(self, counts):
-        # how long the data needs to be high/low to generate an interrupt
-        # Setting of 1 means 'every measurement', 2 means "two in a row", etc
-        # up to 16
         if not 1 <= counts <= 16:
             raise ValueError("Persistance counts must be 1-16")
         self._int_persistance = counts - 1
 
     @property
     def enable_int(self):
+        """Whether the interupt is enabled"""
         return self._enable_int
 
     @enable_int.setter
@@ -217,6 +226,7 @@ class LTR303(LTR329):
 
     @property
     def int_polarity(self):
+        """The polarity of the interupt (whether high or low is "active")"""
         return self._int_polarity
 
     @int_polarity.setter
