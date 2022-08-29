@@ -121,7 +121,8 @@ class LTR329:
     def integration_time(self, int_time):
         if not int_time in _integration_times:
             raise RuntimeError(
-                "Invalid integration time: must be 50, 100, 150, 200, 250, 300, 350, or 400 millisec"
+                "Invalid integration time: must be 50, 100, 150, "
+                "200, 250, 300, 350, or 400 millisec"
             )
         self._integration_time = _integration_times.index(int_time)
 
