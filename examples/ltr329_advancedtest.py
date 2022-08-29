@@ -4,11 +4,10 @@
 
 import time
 import board
+from adafruit_debug_i2c import DebugI2C
 import adafruit_ltr329_ltr303 as adafruit_ltr329
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
-
-from adafruit_debug_i2c import DebugI2C
 
 debug_i2c = DebugI2C(i2c)
 
