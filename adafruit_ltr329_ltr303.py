@@ -169,9 +169,9 @@ class LTR329:
         temp = self._light_data
         if self.als_data_invalid:
             raise ValueError("Data invalid / over-run!")
-        ir = temp & 0xFFFF
+        infra = temp & 0xFFFF
         vis_ir = temp >> 16
-        return vis_ir - ir
+        return vis_ir - infra
 
 
 class LTR303(LTR329):
