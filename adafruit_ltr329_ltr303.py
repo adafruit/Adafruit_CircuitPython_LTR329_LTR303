@@ -69,7 +69,7 @@ class LTR329:
     part_id = ROUnaryStruct(_LTR329_REG_PARTID, "<B")
     manufacturer_id = ROUnaryStruct(_LTR329_REG_MANUID, "<B")
     # both channels must be read at once!
-    _light_data =  ROUnaryStruct(_LTR329_REG_CHANNEL1, "<I")
+    _light_data = ROUnaryStruct(_LTR329_REG_CHANNEL1, "<I")
     # Control register bits
     _reset = RWBit(_LTR329_REG_ALS_CONTR, 1)
     _als_gain = RWBits(3, _LTR329_REG_ALS_CONTR, 2)
@@ -81,7 +81,6 @@ class LTR329:
     als_data_invalid = RWBit(_LTR329_REG_STATUS, 7)
     _als_data_gain_range = RWBits(3, _LTR329_REG_STATUS, 4)
     new_als_data_available = RWBit(_LTR329_REG_STATUS, 2)
-    
 
     def __init__(self, i2c, address=_LTR329_I2CADDR_DEFAULT):
         self.i2c_device = i2c_device.I2CDevice(i2c, address)
@@ -89,7 +88,7 @@ class LTR329:
             raise RuntimeError("Unable to find LTR-329, check your wiring")
         self.reset()
         self.active_mode = True
-        
+
     def reset(self):
         """Reset the sensor to the default state set by the library"""
         self._reset = True
@@ -121,7 +120,9 @@ class LTR329:
     @integration_time.setter
     def integration_time(self, int_time):
         if not int_time in _integration_times:
-            raise RuntimeError("Invalid integration time: must be 50, 100, 150, 200, 250, 300, 350, or 400 millisec")
+            raise RuntimeError(
+                "Invalid integration time: must be 50, 100, 150, 200, 250, 300, 350, or 400 millisec"
+            )
         self._integration_time = _integration_times.index(int_time)
 
     @property
@@ -133,41 +134,43 @@ class LTR329:
     @measurement_rate.setter
     def measurement_rate(self, rate):
         if not rate in _measurement_rates:
-            raise RuntimeError("Invalid measurement rate: must be 50, 100, 200, 500, 1000, or 2000 millisec")
+            raise RuntimeError(
+                "Invalid measurement rate: must be 50, 100, 200, 500, 1000, or 2000 millisec"
+            )
         self._measurement_rate = _measurement_rates.index(rate)
 
     def throw_out_reading(self):
-       self._light_data
+        self._light_data
 
     @property
     def light_channels(self):
-       temp = self._light_data
-       if self.als_data_invalid:
-           raise ValueError("Data invalid / over-run!")
-       return (temp >> 16, temp & 0xFFFF)
+        temp = self._light_data
+        if self.als_data_invalid:
+            raise ValueError("Data invalid / over-run!")
+        return (temp >> 16, temp & 0xFFFF)
 
     @property
     def visible_plus_ir_light(self):
-       if self.als_data_invalid:
-           self._light_data  # read data to clear it out
-           raise ValueError("Data invalid / over-run!")
-       return self._light_data >> 16
+        if self.als_data_invalid:
+            self._light_data  # read data to clear it out
+            raise ValueError("Data invalid / over-run!")
+        return self._light_data >> 16
 
     @property
     def ir_light(self):
-       if self.als_data_invalid:
-           self._light_data  # read data to clear it out
-           raise ValueError("Data invalid / over-run!")
-       return self._light_data & 0xFFFF
+        if self.als_data_invalid:
+            self._light_data  # read data to clear it out
+            raise ValueError("Data invalid / over-run!")
+        return self._light_data & 0xFFFF
 
     @property
     def visible_light(self):
-       temp = self._light_data
-       if self.als_data_invalid:
-           raise ValueError("Data invalid / over-run!")
-       ir = temp & 0xFFFF
-       vis_ir = temp >> 16
-       return (vis_ir - ir)
+        temp = self._light_data
+        if self.als_data_invalid:
+            raise ValueError("Data invalid / over-run!")
+        ir = temp & 0xFFFF
+        vis_ir = temp >> 16
+        return vis_ir - ir
 
 
 class LTR303(LTR329):
@@ -175,12 +178,13 @@ class LTR303(LTR329):
     :param ~busio.I2C i2c_bus: The I2C bus the sensor is connected to.
     :param address: The I2C device address. Defaults to :const:`0x29`
     """
+
     _enable_int = RWBit(_LTR303_REG_INTERRUPT, 1)
     _int_polarity = RWBit(_LTR303_REG_INTERRUPT, 2)
     # The high and low int thresholds
     threshold_high = UnaryStruct(_LTR303_REG_THRESHHIGH_LSB, "<H")
     threshold_low = UnaryStruct(_LTR303_REG_THRESHLOW_LSB, "<H")
-    
+
     _int_persistance = RWBits(4, _LTR303_REG_INTPERSIST, 0)
 
     @property
@@ -196,7 +200,6 @@ class LTR303(LTR329):
             raise ValueError("Persistance counts must be 1-16")
         self._int_persistance = counts - 1
 
-    
     @property
     def enable_int(self):
         return self._enable_int

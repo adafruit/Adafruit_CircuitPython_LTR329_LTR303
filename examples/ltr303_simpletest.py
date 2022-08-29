@@ -8,7 +8,7 @@ from adafruit_ltr329_ltr303 import LTR303
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
 
-time.sleep(0.1) # sensor takes 100ms to 'boot' on power up
+time.sleep(0.1)  # sensor takes 100ms to 'boot' on power up
 ltr303 = LTR303(i2c)
 
 while True:
