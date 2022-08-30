@@ -2,7 +2,7 @@ Introduction
 ============
 
 
-.. image:: https://readthedocs.org/projects/adafruit-circuitpython-ltr329/badge/?version=latest
+.. image:: https://readthedocs.org/projects/adafruit-circuitpython-ltr329-ltr303/badge/?version=latest
     :target: https://docs.circuitpython.org/projects/ltr329/en/latest/
     :alt: Documentation Status
 
@@ -12,8 +12,8 @@ Introduction
     :alt: Discord
 
 
-.. image:: https://github.com/adafruit/Adafruit_CircuitPython_LTR329/workflows/Build%20CI/badge.svg
-    :target: https://github.com/adafruit/Adafruit_CircuitPython_LTR329/actions
+.. image:: https://github.com/adafruit/Adafruit_CircuitPython_LTR329_LTR303/workflows/Build%20CI/badge.svg
+    :target: https://github.com/adafruit/Adafruit_CircuitPython_LTR329_LTR303/actions
     :alt: Build Status
 
 
