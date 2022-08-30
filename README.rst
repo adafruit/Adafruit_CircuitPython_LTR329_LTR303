@@ -3,7 +3,7 @@ Introduction
 
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-ltr329-ltr303/badge/?version=latest
-    :target: https://docs.circuitpython.org/projects/ltr329/en/latest/
+    :target: https://docs.circuitpython.org/projects/ltr329-ltr303/en/latest/
     :alt: Documentation Status
 
 
