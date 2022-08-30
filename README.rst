@@ -50,13 +50,13 @@ To install for current user:
 
 .. code-block:: shell
 
-    pip3 install adafruit-circuitpython-ltr329
+    pip3 install adafruit-circuitpython-ltr329-ltr303
 
 To install system-wide (this may be required in some cases):
 
 .. code-block:: shell
 
-    sudo pip3 install adafruit-circuitpython-ltr329
+    sudo pip3 install adafruit-circuitpython-ltr329-ltr303
 
 To install in a virtual environment in your current project:
 
@@ -65,7 +65,7 @@ To install in a virtual environment in your current project:
     mkdir project-name && cd project-name
     python3 -m venv .env
     source .env/bin/activate
-    pip3 install adafruit-circuitpython-ltr329
+    pip3 install adafruit-circuitpython-ltr329-ltr303
 
 
 
@@ -84,7 +84,7 @@ following command to install:
 
 .. code-block:: shell
 
-    circup install ltr329
+    circup install ltr329-ltr303
 
 Or the following command to update an existing version:
 
