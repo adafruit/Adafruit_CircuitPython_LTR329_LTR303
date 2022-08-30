@@ -33,6 +33,12 @@ from adafruit_register.i2c_struct import ROUnaryStruct, UnaryStruct
 from adafruit_register.i2c_bit import RWBit
 from adafruit_register.i2c_bits import RWBits
 
+try:
+    from typing import Tuple
+    from busio import I2C
+except ImportError:
+    pass
+
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_LTR329_LTR303.git"
 
@@ -83,43 +89,43 @@ class LTR329:
     _als_data_gain_range = RWBits(3, _LTR329_REG_STATUS, 4)
     new_als_data_available = RWBit(_LTR329_REG_STATUS, 2)
 
-    def __init__(self, i2c, address=_LTR329_I2CADDR_DEFAULT):
+    def __init__(self, i2c: I2C, address: int = _LTR329_I2CADDR_DEFAULT) -> None:
         self.i2c_device = i2c_device.I2CDevice(i2c, address)
         if self.part_id != 0xA0 or self.manufacturer_id != 0x05:
             raise RuntimeError("Unable to find LTR-329, check your wiring")
         self.reset()
         self.active_mode = True
 
-    def reset(self):
+    def reset(self) -> None:
         """Reset the sensor to the default state set by the library"""
         self._reset = True
         time.sleep(0.010)
 
     @property
-    def als_gain(self):
+    def als_gain(self) -> int:
         """ALS gain, can be: 1, 2, 4, 8, 48 or 96 times"""
         return _als_gains[self._als_gain]
 
     @als_gain.setter
-    def als_gain(self, gain):
+    def als_gain(self, gain: int) -> None:
         if not gain in _als_gains:
             raise RuntimeError("Invalid gain: must be 1, 2, 4, 8, 48 or 96 x")
         self._als_gain = _als_gains.index(gain)
 
     @property
-    def als_data_gain(self):
+    def als_data_gain(self) -> int:
         """ALS gain for data that is being read now,
         can be: 1, 2, 4, 8, 48 or 96 times"""
         return _als_gains[self._als_data_gain_range]
 
     @property
-    def integration_time(self):
+    def integration_time(self) -> int:
         """ALS integration times, can be: 50, 100, 150, 200, 250,
         300, 350, or 400 millisec"""
         return _integration_times[self._integration_time]
 
     @integration_time.setter
-    def integration_time(self, int_time):
+    def integration_time(self, int_time: int) -> None:
         if not int_time in _integration_times:
             raise RuntimeError(
                 "Invalid integration time: must be 50, 100, 150, "
@@ -128,25 +134,25 @@ class LTR329:
         self._integration_time = _integration_times.index(int_time)
 
     @property
-    def measurement_rate(self):
+    def measurement_rate(self) -> int:
         """ALS measurement rate, must be = or > than ALS integration rate!
         Can be: 50, 100, 200, 500, 1000, or 2000 millisec"""
         return _measurement_rates[self._measurement_rate]
 
     @measurement_rate.setter
-    def measurement_rate(self, rate):
+    def measurement_rate(self, rate: int) -> None:
         if not rate in _measurement_rates:
             raise RuntimeError(
                 "Invalid measurement rate: must be 50, 100, 200, 500, 1000, or 2000 millisec"
             )
         self._measurement_rate = _measurement_rates.index(rate)
 
-    def throw_out_reading(self):
+    def throw_out_reading(self) -> None:
         """Throw out a reading (typically done to clear it out)"""
         _ = self._light_data
 
     @property
-    def light_channels(self):
+    def light_channels(self) -> Tuple[int, int]:
         """A data pair of both visible+IR light, and the IR-only light"""
         temp = self._light_data
         if self.als_data_invalid:
@@ -154,7 +160,7 @@ class LTR329:
         return (temp >> 16, temp & 0xFFFF)
 
     @property
-    def visible_plus_ir_light(self):
+    def visible_plus_ir_light(self) -> int:
         """The visible + IR light data"""
         if self.als_data_invalid:
             _ = self._light_data  # read data to clear it out
@@ -162,7 +168,7 @@ class LTR329:
         return self._light_data >> 16
 
     @property
-    def ir_light(self):
+    def ir_light(self) -> int:
         """The IR light data"""
         if self.als_data_invalid:
             _ = self._light_data  # read data to clear it out
@@ -170,7 +176,7 @@ class LTR329:
         return self._light_data & 0xFFFF
 
     @property
-    def visible_light(self):
+    def visible_light(self) -> int:
         """The visible light data"""
         temp = self._light_data
         if self.als_data_invalid:
@@ -196,7 +202,7 @@ class LTR303(LTR329):
     _int_persistance = RWBits(4, _LTR303_REG_INTPERSIST, 0)
 
     @property
-    def int_persistance(self):
+    def int_persistance(self) -> int:
         """How long the data needs to be high/low to generate an interrupt.
         Setting of 1 means 'every measurement', 2 means "two in a row", etc
         up to 16
@@ -204,18 +210,18 @@ class LTR303(LTR329):
         return self._int_persistance + 1
 
     @int_persistance.setter
-    def int_persistance(self, counts):
+    def int_persistance(self, counts: int) -> None:
         if not 1 <= counts <= 16:
             raise ValueError("Persistance counts must be 1-16")
         self._int_persistance = counts - 1
 
     @property
-    def enable_int(self):
+    def enable_int(self) -> bool:
         """Whether the interupt is enabled"""
         return self._enable_int
 
     @enable_int.setter
-    def enable_int(self, enable):
+    def enable_int(self, enable: bool) -> None:
         # we must be in non-active mode to change this register!
         curr_mode = self.active_mode
         self.active_mode = False
@@ -225,12 +231,12 @@ class LTR303(LTR329):
         self.active_mode = curr_mode
 
     @property
-    def int_polarity(self):
+    def int_polarity(self) -> bool:
         """The polarity of the interupt (whether high or low is "active")"""
         return self._int_polarity
 
     @int_polarity.setter
-    def int_polarity(self, pol):
+    def int_polarity(self, pol: bool) -> None:
         # we must be in non-active mode to change this register!
         curr_mode = self.active_mode
         self.active_mode = False
