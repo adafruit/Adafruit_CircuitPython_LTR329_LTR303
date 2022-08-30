@@ -11,8 +11,8 @@ requires = [
 ]
 
 [project]
-name = "adafruit-circuitpython-ltr329"
-description = "Python driver for LTR-329 light sensor"
+name = "adafruit-circuitpython-ltr329-ltr303"
+description = "Python driver for LTR-329/303 light sensors"
 version = "0.0.0+auto.0"
 readme = "README.rst"
 authors = [
@@ -27,6 +27,9 @@ keywords = [
     "ltr329",
     "LTR-329",
     "LTR329",
+    "LTR-303",
+    "ltr303",
+    "LRT303",
     "light",
     "lux",
     "sensor",
