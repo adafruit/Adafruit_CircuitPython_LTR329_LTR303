@@ -175,16 +175,6 @@ class LTR329:
             raise ValueError("Data invalid / over-run!")
         return self._light_data & 0xFFFF
 
-    @property
-    def visible_light(self) -> int:
-        """The visible light data"""
-        temp = self._light_data
-        if self.als_data_invalid:
-            raise ValueError("Data invalid / over-run!")
-        infra = temp & 0xFFFF
-        vis_infra = temp >> 16
-        return vis_infra - infra
-
 
 class LTR303(LTR329):
     """Base driver for the LTR-303 light sensor, basically an LTR-329 with INT out

@@ -70,7 +70,6 @@ while True:
             # Now we can do various math...
             print("Visible + IR:", visible_plus_ir)
             print("Infrared    :", ir)
-            print("Visible     :", visible_plus_ir - ir)
             print("ALS gain:   :", ltr303.als_data_gain)
             print()
         except ValueError:
