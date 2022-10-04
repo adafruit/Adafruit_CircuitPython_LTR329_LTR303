@@ -4,15 +4,12 @@
 
 import time
 import board
-from adafruit_debug_i2c import DebugI2C
 import adafruit_ltr329_ltr303 as adafruit_ltr329
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
 
-debug_i2c = DebugI2C(i2c)
-
 time.sleep(0.1)  # sensor takes 100ms to 'boot' on power up
-ltr329 = adafruit_ltr329.LTR329(debug_i2c)
+ltr329 = adafruit_ltr329.LTR329(i2c)
 
 # Can set the ALS light gain, can be: 1, 2, 4, 8, 48 or 96 times
 # to range from 1~64 kLux to 0.01~600 Lux
@@ -56,7 +53,6 @@ while True:
             # Now we can do various math...
             print("Visible + IR:", visible_plus_ir)
             print("Infrared    :", ir)
-            print("Visible     :", visible_plus_ir - ir)
             print("ALS gain:   :", ltr329.als_data_gain)
             print()
         except ValueError:

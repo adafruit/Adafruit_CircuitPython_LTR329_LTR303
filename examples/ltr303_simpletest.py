@@ -14,6 +14,5 @@ ltr303 = LTR303(i2c)
 while True:
     print("Visible + IR:", ltr303.visible_plus_ir_light)
     print("Infrared    :", ltr303.ir_light)
-    print("Visible     :", ltr303.visible_light)
     print()
     time.sleep(0.5)  # sleep for half a second
