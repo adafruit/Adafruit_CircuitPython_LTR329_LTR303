@@ -18,13 +18,13 @@ print("LTR-329 ALS gain:", ltr329.als_gain)
 
 # Can set the ALS measurement integration time, how long the sensor
 # 'looks' for light data. Default is 100ms.
-# Set to: 50, 100, 150, 200, 250, 300, 350, or 400 millisec
+# Set to: 50, 100, 150, 200, 250, 300, 350, or 400 milliseconds
 # ltr329.integration_time = 50
 print("LTR-329 integration time (ms):", ltr329.integration_time)
 
 # Can set the ALS measurement rate, how often the data register updates
 # Default is 500ms. Must be equal or greater than the integration time
-# Set to: 50, 100, 200, 500, 1000, 2000 millisec
+# Set to: 50, 100, 200, 500, 1000, 2000 milliseconds
 # ltr329.measurement_rate = 500
 print("LTR-329 measurement rate (ms):", ltr329.measurement_rate)
 

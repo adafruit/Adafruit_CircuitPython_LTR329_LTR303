@@ -35,7 +35,7 @@ print("LTR-303 measurement rate (ms):", ltr303.measurement_rate)
 # The interrupt output can be enabled
 ltr303.enable_int = True
 # We can also change whether the polarity is active LOW (False) or HIGH (True)
-ltr303.int_polarity = False
+ltr303.int_polarity = True
 
 # Then set the low and high thresholds that would trigger an IRQ!
 ltr303.threshold_low = 2000  # interrupt goes off if BELOW this number
@@ -43,10 +43,10 @@ ltr303.threshold_high = 40000  # or ABOVE this number!
 print("Interrupt thresholds:", ltr303.threshold_low, ltr303.threshold_high)
 
 # Finally, we can set how many measurements must be above/below before
-# we trigger an IRQ - basically avoid spurious readings. A seting of 1
+# we trigger an IRQ - basically avoid spurious readings. A setting of 1
 # means every value triggers an int, 2 means two consecutive readings to
 # trigger... up to 16!
-ltr303.int_persistance = 4
+ltr303.int_persistence = 4
 
 while True:
     # The sensor will let us know when the measurement time has
