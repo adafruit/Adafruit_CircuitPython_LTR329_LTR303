@@ -121,7 +121,7 @@ class LTR329:
     @property
     def integration_time(self) -> int:
         """ALS integration times, can be: 50, 100, 150, 200, 250,
-        300, 350, or 400 millisec"""
+        300, 350, or 400 milliseconds"""
         return _integration_times[self._integration_time]
 
     @integration_time.setter
@@ -129,21 +129,21 @@ class LTR329:
         if not int_time in _integration_times:
             raise RuntimeError(
                 "Invalid integration time: must be 50, 100, 150, "
-                "200, 250, 300, 350, or 400 millisec"
+                "200, 250, 300, 350, or 400 milliseconds"
             )
         self._integration_time = _integration_times.index(int_time)
 
     @property
     def measurement_rate(self) -> int:
         """ALS measurement rate, must be = or > than ALS integration rate!
-        Can be: 50, 100, 200, 500, 1000, or 2000 millisec"""
+        Can be: 50, 100, 200, 500, 1000, or 2000 milliseconds"""
         return _measurement_rates[self._measurement_rate]
 
     @measurement_rate.setter
     def measurement_rate(self, rate: int) -> None:
         if not rate in _measurement_rates:
             raise RuntimeError(
-                "Invalid measurement rate: must be 50, 100, 200, 500, 1000, or 2000 millisec"
+                "Invalid measurement rate: must be 50, 100, 200, 500, 1000, or 2000 milliseconds"
             )
         self._measurement_rate = _measurement_rates.index(rate)
 
@@ -189,25 +189,25 @@ class LTR303(LTR329):
     threshold_high = UnaryStruct(_LTR303_REG_THRESHHIGH_LSB, "<H")
     threshold_low = UnaryStruct(_LTR303_REG_THRESHLOW_LSB, "<H")
 
-    _int_persistance = RWBits(4, _LTR303_REG_INTPERSIST, 0)
+    _int_persistence = RWBits(4, _LTR303_REG_INTPERSIST, 0)
 
     @property
-    def int_persistance(self) -> int:
+    def int_persistence(self) -> int:
         """How long the data needs to be high/low to generate an interrupt.
         Setting of 1 means 'every measurement', 2 means "two in a row", etc
         up to 16
         """
-        return self._int_persistance + 1
+        return self._int_persistence + 1
 
-    @int_persistance.setter
-    def int_persistance(self, counts: int) -> None:
+    @int_persistence.setter
+    def int_persistence(self, counts: int) -> None:
         if not 1 <= counts <= 16:
-            raise ValueError("Persistance counts must be 1-16")
-        self._int_persistance = counts - 1
+            raise ValueError("Persistence counts must be 1-16")
+        self._int_persistence = counts - 1
 
     @property
     def enable_int(self) -> bool:
-        """Whether the interupt is enabled"""
+        """Enable the interrupt functionality."""
         return self._enable_int
 
     @enable_int.setter
@@ -222,7 +222,7 @@ class LTR303(LTR329):
 
     @property
     def int_polarity(self) -> bool:
-        """The polarity of the interupt (whether high or low is "active")"""
+        """The polarity of the interrupt (whether high or low is "active")"""
         return self._int_polarity
 
     @int_polarity.setter
