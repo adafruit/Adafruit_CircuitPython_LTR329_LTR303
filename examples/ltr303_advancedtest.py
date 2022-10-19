@@ -35,7 +35,8 @@ print("LTR-303 measurement rate (ms):", ltr303.measurement_rate)
 # The interrupt output can be enabled
 ltr303.enable_int = True
 # We can also change whether the polarity is active LOW (False) or HIGH (True)
-ltr303.int_polarity = True
+# Default is LOW (False)
+ltr303.int_polarity = False
 
 # Then set the low and high thresholds that would trigger an IRQ!
 ltr303.threshold_low = 2000  # interrupt goes off if BELOW this number
