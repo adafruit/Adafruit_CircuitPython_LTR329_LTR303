@@ -7,6 +7,7 @@ import board
 import adafruit_ltr329_ltr303 as adafruit_ltr303
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 
 time.sleep(0.1)  # sensor takes 100ms to 'boot' on power up
 ltr303 = adafruit_ltr303.LTR303(i2c)
