@@ -84,7 +84,7 @@ following command to install:
 
 .. code-block:: shell
 
-    circup install ltr329-ltr303
+    circup install adafruit_ltr329_ltr303
 
 Or the following command to update an existing version:
 
