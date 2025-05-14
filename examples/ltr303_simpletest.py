@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: Unlicense
 
 import time
+
 import board
+
 from adafruit_ltr329_ltr303 import LTR303
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
